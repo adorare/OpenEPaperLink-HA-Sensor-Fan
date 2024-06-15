@@ -1,0 +1,80 @@
+alias: Display - Toilet sensor and fan state
+trigger:
+  - platform: time_pattern
+    minutes: /15
+action:
+  - service: open_epaper_link.drawcustom
+    target:
+      entity_id: open_epaper_link.CHANGETHIS
+    data:
+      background: white
+      rotate: 270
+      dry-run: false
+      payload:
+        - type: icon
+          value: fan
+          x: 61
+          "y": 13
+          anchor: mt
+          size: 50
+          color: >- 
+            {% if is_state('switch.smart_switch_2303173951527354060748e1e9c03f18_outlet_2', 'on') %} red {% else %} black {% endif %}
+        - type: text
+          value: >-
+            {{states('switch.smart_switch_2303173951527354060748e1e9c03f18_outlet_2')
+            | upper}}
+          font: ../../media/GothamRnd-Bold.ttf
+          x: 61
+          "y": 60
+          anchor: ma
+          size: 30
+          color: >- 
+            {% if is_state('switch.smart_switch_2303173951527354060748e1e9c03f18_outlet_2', 'on') %} red {% else %} black {% endif %}
+        - type: line
+          width: 1
+          fill: black
+          x_start: 0
+          x_end: 122
+          y_start: 100
+          y_end: 100
+        - type: icon
+          value: thermometer
+          x: 20
+          "y": 137
+          anchor: mm
+          size: 20
+          color: black
+        - type: text
+          value: >-
+            {{states('sensor.aqara_temp_humidity_sensor_temperature') |
+            round(1)}}°C
+          font: ../../media/GothamRnd-Bold.ttf
+          x: 35
+          "y": 137
+          anchor: lm
+          size: 23
+          color: black
+        - type: line
+          width: 1
+          fill: black
+          x_start: 0
+          x_end: 122
+          y_start: 175
+          y_end: 175
+        - type: icon
+          value: water-percent
+          x: 20
+          "y": 212
+          anchor: mm
+          size: 20
+          color: black
+        - type: text
+          value: >-
+            {{states('sensor.aqara_temp_humidity_sensor_humidity') | round(1)
+            }}%
+          font: ../../media/GothamRnd-Bold.ttf
+          x: 35
+          "y": 212
+          anchor: lm
+          size: 23
+          color: black
